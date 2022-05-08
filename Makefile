@@ -13,9 +13,9 @@ DIR_run_motor = ./lib/run_motor
 DIR_sensors = ./lib/sensors
 DIR_ls7336r = ./lib/ls7336r
 
-DIR_Examples = ./main
+DIR_Main = ./main
 
-OBJ_C = $(wildcard ${DIR_OBJ}/*.c ${DIR_Examples}/*.c ${DIR_Config}/*.c ${DIR_MotorDriver}/*.c ${DIR_PCA9685}/*.c )
+OBJ_C = $(wildcard ${DIR_OBJ}/*.c ${DIR_Main}/*.c ${DIR_Config}/*.c ${DIR_MotorDriver}/*.c ${DIR_PCA9685}/*.c ${DIR_run_motor}/*.c ${DIR_sensors}/*.c ${DIR_ls7336r}/*.c)
 OBJ_O = $(patsubst %.c,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
 
 TARGET = start_car
@@ -46,8 +46,8 @@ LIB = -lpigpio -lrt -lwiringPi -lm
 ${TARGET}:${OBJ_O}
 	$(CC) $(CFLAGS) $(OBJ_O) -o $@ $(LIB) -lm
 
-${DIR_BIN}/%.o : $(DIR_Examples)/%.c
-	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_OBJ) -I $(DIR_Config) -I $(DIR_MotorDriver) -I $(DIR_PCA9685)
+${DIR_BIN}/%.o : $(DIR_Main)/%.c
+	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_OBJ) -I $(DIR_Config) -I $(DIR_MotorDriver) -I $(DIR_PCA9685) -I ${DIR_ls7336r} -I ${DIR_sensors} -I ${DIR_run_motor}
 
 ${DIR_BIN}/%.o : $(DIR_OBJ)/%.c
 	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_Config)

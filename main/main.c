@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <pigpio.h>
+#include <pthread.h>
 
 int main()
 {

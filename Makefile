@@ -1,6 +1,6 @@
 # Name: Shane Waxler
 # Student ID: 918415347
-# Assignment 3 - Start Your Motors
+# Final Project
 # Date: 03/18/2022
 
 DIR_OBJ = ./lib
@@ -8,12 +8,12 @@ DIR_BIN = ./bin
 DIR_Config = ./lib/Config
 DIR_MotorDriver = ./lib/MotorDriver
 DIR_PCA9685 = ./lib/PCA9685
-DIR_Examples = ./assignment3code
+DIR_Examples = ./motordriver
 
 OBJ_C = $(wildcard ${DIR_OBJ}/*.c ${DIR_Examples}/*.c ${DIR_Config}/*.c ${DIR_MotorDriver}/*.c ${DIR_PCA9685}/*.c )
 OBJ_O = $(patsubst %.c,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
 
-TARGET = assignment3
+TARGET = final_project
 #BIN_TARGET = ${DIR_BIN}/${TARGET}
 
 CC = gcc

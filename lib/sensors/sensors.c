@@ -21,6 +21,7 @@ void* sense(void* ptr)
 {
 	sensor* s = (struct sensor*) ptr;
 	int pin = s->pin;
+  printf("In thread. Pin number %d\n",pin);
 	while(1)
 		s->read = gpioRead(pin);
 }

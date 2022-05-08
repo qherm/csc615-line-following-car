@@ -66,51 +66,51 @@ void run_motor(UBYTE motor, int dir, int speed)
 // 	exit(0);
 // }
 
-int main(int argc, char *argv[])
-{
-	int i;
+// int main(int argc, char *argv[])
+// {
+// 	int i;
 	
-	// Setup
-	if(DEV_ModuleInit())
-		exit(0);
+// 	// Setup
+// 	if(DEV_ModuleInit())
+// 		exit(0);
 	
-	if(gpioInitialise() < 0)
-	{
-		fprintf(stderr, "pigpio initialize failure\n");
-		return 1;
-	}
+// 	if(gpioInitialise() < 0)
+// 	{
+// 		fprintf(stderr, "pigpio initialize failure\n");
+// 		return 1;
+// 	}
 	
-	gpioSetMode(BUTTON_PIN, PI_INPUT);
-	signal(SIGINT, handler);
+// 	gpioSetMode(BUTTON_PIN, PI_INPUT);
+// 	signal(SIGINT, handler);
 	
-	// Wait for button press	
-	while(!gpioRead(BUTTON_PIN)){}
+// 	// Wait for button press	
+// 	while(!gpioRead(BUTTON_PIN)){}
 	
-	init_motor();
+// 	init_motor();
 	
-	// Speed forward 100 -> 15
-	run_motor(0,100);
-	sleep(2);
-	for(i = 95; i >=15; i-=5)
-	{
-		run_motor(0,i);
-		sleep(1);
-	}
+// 	// Speed forward 100 -> 15
+// 	run_motor(0,100);
+// 	sleep(2);
+// 	for(i = 95; i >=15; i-=5)
+// 	{
+// 		run_motor(0,i);
+// 		sleep(1);
+// 	}
 	
-	stop_motor();
-	sleep(1);
+// 	stop_motor();
+// 	sleep(1);
 	
-	// Speed backward 15 -> 100
-	run_motor(1,15);
-	for(i = 20; i <= 100; i+=5)
-	{
-		run_motor(1,i);
-		sleep(1);
-	}
+// 	// Speed backward 15 -> 100
+// 	run_motor(1,15);
+// 	for(i = 20; i <= 100; i+=5)
+// 	{
+// 		run_motor(1,i);
+// 		sleep(1);
+// 	}
 
-	sleep(2);
-	stop_motor(PWMB);	
-	DEV_ModuleExit();
-	gpioTerminate();
-	return 0;
-}
+// 	sleep(2);
+// 	stop_motor(PWMB);	
+// 	DEV_ModuleExit();
+// 	gpioTerminate();
+// 	return 0;
+// }

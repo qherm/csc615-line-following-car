@@ -11,7 +11,7 @@
 *	       a waveshare hat.
 *
 *********************************************************/
-#include "motordriver.h"
+#include "run_motor.h"
 #include <pigpio.h>
 #include <unistd.h>
 

@@ -10,8 +10,8 @@
 * Description: Run a motor.
 *
 *********************************************************/
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __RUN_MOTOR_H__
+#define __RUN_MOTOR_H__
 
 #include <stdio.h>      //printf()
 #include <stdlib.h>     //exit()

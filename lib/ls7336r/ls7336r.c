@@ -182,39 +182,39 @@ int initLS7336RChip (int ChipEnable)
 	}	
 	
 //Routine to test LS7336R Quadrature Counter
-int main(int argc, char *argv[])
-	{
-	int ret;
+// int main(int argc, char *argv[])
+// 	{
+// 	int ret;
 		
-    if (gpioInitialise() < 0)
-    	{
-      	fprintf(stderr, "pigpio initialization failed.\n");
-      	return 1;
-      	}
+//     if (gpioInitialise() < 0)
+//     	{
+//       	fprintf(stderr, "pigpio initialization failed.\n");
+//       	return 1;
+//       	}
       	
-    ret = initLS7336RChip (SPI0_CE0);
-    if (ret != 0)
-    	{
-    	printf ("Error initializing the LS7336R chip.  Error code: %d\n", ret);
-    	}
+//     ret = initLS7336RChip (SPI0_CE0);
+//     if (ret != 0)
+//     	{
+//     	printf ("Error initializing the LS7336R chip.  Error code: %d\n", ret);
+//     	}
     
-    int lastCountA = 0;
+//     int lastCountA = 0;
     
-    for (int j = 0; j < 20; j++)
-    	{
-    	int resultA = readLS7336RCounter(SPI0_CE0);
-    	double speedA = ((resultA-lastCountA)/(4*540.0))*3.1415926 * 6.5 * 2;
-    	printf ("Count: %d, Speed: %f, delta: %d\n", resultA, speedA, resultA-lastCountA);
-    	lastCountA = resultA;
-    	sleep (1);
-    	}
+//     for (int j = 0; j < 20; j++)
+//     	{
+//     	int resultA = readLS7336RCounter(SPI0_CE0);
+//     	double speedA = ((resultA-lastCountA)/(4*540.0))*3.1415926 * 6.5 * 2;
+//     	printf ("Count: %d, Speed: %f, delta: %d\n", resultA, speedA, resultA-lastCountA);
+//     	lastCountA = resultA;
+//     	sleep (1);
+//     	}
     
-    bbSPIClose(SPI0_CE0);
-    //bbSPIClose(SPI0_CE1);
+//     bbSPIClose(SPI0_CE0);
+//     //bbSPIClose(SPI0_CE1);
 
-    gpioTerminate();
+//     gpioTerminate();
 
-    return 0;
-    }
+//     return 0;
+//     }
     
 

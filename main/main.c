@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <pigpio.h>
 #include <pthread.h>
+#include <sensor.h>
 
 int main()
 {

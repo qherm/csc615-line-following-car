@@ -8,10 +8,10 @@ DIR_BIN = ./bin
 DIR_Config = ./lib/Config
 DIR_MotorDriver = ./lib/MotorDriver
 DIR_PCA9685 = ./lib/PCA9685
-DIR_main = ./main
 
 DIR_run_motor = ./lib/run_motor
 DIR_sensors = ./lib/sensors
+DIR_main = ./main
 
 OBJ_C = $(wildcard ${DIR_OBJ}/*.c ${DIR_Examples}/*.c ${DIR_Config}/*.c ${DIR_MotorDriver}/*.c ${DIR_PCA9685}/*.c )
 OBJ_O = $(patsubst %.c,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
@@ -44,10 +44,16 @@ ${DIR_BIN}/%.o : $(DIR_main)/%.c
 	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_OBJ) -I $(DIR_Config) -I $(DIR_MotorDriver) -I $(DIR_PCA9685)
 
 ${DIR_BIN}/%.o : $(DIR_sensors)/%.c
-	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_OBJ) -I $(DIR_Config) -I $(DIR_MotorDriver) -I $(DIR_PCA9685)
+	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB)
+
+# ${DIR_BIN}/%.o : $(DIR_sensors)/%.c
+# 	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_OBJ) -I $(DIR_Config) -I $(DIR_MotorDriver)
+
+# ${DIR_BIN}/%.o : $(DIR_run_motor)/%.c
+# 	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_OBJ) -I $(DIR_Config) -I $(DIR_MotorDriver) -I $(DIR_PCA9685)
 
 ${DIR_BIN}/%.o : $(DIR_run_motor)/%.c
-	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_OBJ) -I $(DIR_Config) -I $(DIR_MotorDriver) -I $(DIR_PCA9685)
+	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB)
 
 ${DIR_BIN}/%.o : $(DIR_OBJ)/%.c
 	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_Config)

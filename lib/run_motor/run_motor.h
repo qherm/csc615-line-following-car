@@ -30,7 +30,7 @@
 
 void stop_motor();
 void init_motors();
-void run_motor(int direction, int speed);
+void run_motor(UBYTE motor, int dir, int speed);
 void handler(int signo);
 
 #endif 

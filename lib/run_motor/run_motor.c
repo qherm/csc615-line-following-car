@@ -31,7 +31,7 @@ void init_motors()
 /*
 * 	Author: Waveshare team. Rewrite this after testing.
 */
-void run_motor(UBYTE motor, int direction, int speed)
+void run_motor(UBYTE motor, int dir, int speed)
 {
 	if(speed > 100)
         speed = 100;

@@ -3,6 +3,7 @@
 #include <pigpio.h>
 #include <pthread.h>
 #include "sensors.h"
+#include "run_motor.h"
 
 int main()
 {
@@ -34,6 +35,8 @@ int main()
 	line_middle_return = pthread_create(&line_middle_thread, NULL, sense, &line_middle);
     line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
 	
+	init_motors();
+
 	while(1)
 	{
 		printf("Line left read: %i\n", line_left.read);
@@ -46,9 +49,6 @@ int main()
 	pthread_join(line_left_thread, NULL);
 	pthread_join(line_middle_thread, NULL);
 	pthread_join(line_right_thread, NULL);
-
-	// printf("Obstacle thread returns: %i\n", obstacle_return);
-	// printf("Line thread returns: %i\n", line_return);
 
 	return 0;
 }

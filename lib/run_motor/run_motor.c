@@ -15,31 +15,45 @@
 #include <pigpio.h>
 #include <unistd.h>
 
-#define BUTTON_PIN 23
-#define MOTOR_HEX 0x40
-#define PWMB 5		// Change eventually: PCA_CHANNEL_5
-#define BIN1 3		// Change eventually: PCA_CHANNEL_3
-#define BIN2 4		// Change eventually: PCA_CHANNEL_4
-
 void stop_motor()
 {
 	PCA9685_SetPwmDutyCycle(PWMB, 0);	
 }
 
-void init_motor()
+void init_motors()
 {
 	PCA9685_Init(0x40);
+	PCA9685_Init(0x5f);
 	PCA9685_SetPWMFreq(100);
 }
 
-void run_motor(int direction, int speed)
+/*
+* 	Author: Waveshare team. Rewrite this after testing.
+*/
+void run_motor(UBYTE motor, int direction, int speed)
 {
 	if(speed > 100)
-		speed = 100;
+        speed = 100;
 
-	PCA9685_SetPwmDutyCycle(PWMB, speed);
-	PCA9685_SetLevel(BIN1, direction);
-	PCA9685_SetLevel(BIN2, !direction);	
+    if(motor == MOTORA) {
+        PCA9685_SetPwmDutyCycle(PWMA, speed);
+        if(dir == FORWARD) {
+            PCA9685_SetLevel(AIN1, 0);
+            PCA9685_SetLevel(AIN2, 1);
+        } else {
+            PCA9685_SetLevel(AIN1, 1);
+            PCA9685_SetLevel(AIN2, 0);
+        }
+    } else {
+        PCA9685_SetPwmDutyCycle(PWMB, speed);
+        if(dir == FORWARD) {
+            PCA9685_SetLevel(BIN1, 0);
+            PCA9685_SetLevel(BIN2, 1);
+        } else {
+            PCA9685_SetLevel(BIN1, 1);
+            PCA9685_SetLevel(BIN2, 0);
+        }
+    }
 }
 
 // void  handler(int signo)
@@ -51,51 +65,51 @@ void run_motor(int direction, int speed)
 // 	exit(0);
 // }
 
-// int main(int argc, char *argv[])
-// {
-// 	int i;
+int main(int argc, char *argv[])
+{
+	int i;
 	
-// 	// Setup
-// 	if(DEV_ModuleInit())
-// 		exit(0);
+	// Setup
+	if(DEV_ModuleInit())
+		exit(0);
 	
-// 	if(gpioInitialise() < 0)
-// 	{
-// 		fprintf(stderr, "pigpio initialize failure\n");
-// 		return 1;
-// 	}
+	if(gpioInitialise() < 0)
+	{
+		fprintf(stderr, "pigpio initialize failure\n");
+		return 1;
+	}
 	
-// 	gpioSetMode(BUTTON_PIN, PI_INPUT);
-// 	signal(SIGINT, handler);
+	gpioSetMode(BUTTON_PIN, PI_INPUT);
+	signal(SIGINT, handler);
 	
-// 	// Wait for button press	
-// 	while(!gpioRead(BUTTON_PIN)){}
+	// Wait for button press	
+	while(!gpioRead(BUTTON_PIN)){}
 	
-// 	init_motor();
+	init_motor();
 	
-// 	// Speed forward 100 -> 15
-// 	run_motor(0,100);
-// 	sleep(2);
-// 	for(i = 95; i >=15; i-=5)
-// 	{
-// 		run_motor(0,i);
-// 		sleep(1);
-// 	}
+	// Speed forward 100 -> 15
+	run_motor(0,100);
+	sleep(2);
+	for(i = 95; i >=15; i-=5)
+	{
+		run_motor(0,i);
+		sleep(1);
+	}
 	
-// 	stop_motor();
-// 	sleep(1);
+	stop_motor();
+	sleep(1);
 	
-// 	// Speed backward 15 -> 100
-// 	run_motor(1,15);
-// 	for(i = 20; i <= 100; i+=5)
-// 	{
-// 		run_motor(1,i);
-// 		sleep(1);
-// 	}
+	// Speed backward 15 -> 100
+	run_motor(1,15);
+	for(i = 20; i <= 100; i+=5)
+	{
+		run_motor(1,i);
+		sleep(1);
+	}
 
-// 	sleep(2);
-// 	stop_motor(PWMB);	
-// 	DEV_ModuleExit();
-// 	gpioTerminate();
-// 	return 0;
-// }
+	sleep(2);
+	stop_motor(PWMB);	
+	DEV_ModuleExit();
+	gpioTerminate();
+	return 0;
+}

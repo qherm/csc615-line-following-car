@@ -56,7 +56,7 @@ ${DIR_BIN}/%.o : $(DIR_Config)/%.c
 	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB)
 
 ${DIR_BIN}/%.o : $(DIR_run_motor)/%.c
-	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_Config) -I ${DIR_PCA9685}
+	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_Config) -I ${DIR_PCA9685} -I ${DIR_MotorDriver}
 
 ${DIR_BIN}/%.o : $(DIR_sensors)/%.c
 	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_Config)

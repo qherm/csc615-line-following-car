@@ -5,7 +5,6 @@
 #include "sensors.h"
 #include "run_motor.h"
 #include "MotorDriver.h"
-#include "godards"
 
 int main()
 {

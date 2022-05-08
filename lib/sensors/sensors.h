@@ -25,6 +25,13 @@
 #define IRR 4
 #define IRM 5
 
+typedef struct sensor 
+{
+	int pin;
+	volatile int read;
+} sensor;
+
+
 void *sense(void *arg);
 
 #endif

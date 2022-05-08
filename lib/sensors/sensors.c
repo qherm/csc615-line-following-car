@@ -20,12 +20,6 @@
 #define PINOA 24 /* Obstacle Avoidance IR GPIO pin in */
 #define PINLS 23 /* Line Sensor GPIO pin in */
 
-typedef struct sensor 
-{
-	int pin;
-	volatile int read;
-} sensor;
-
 void* sense(void* ptr)
 {
 	sensor* s = (struct sensor*) ptr;

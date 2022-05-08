@@ -33,7 +33,7 @@ else ifeq ($(USELIB), USE_WIRINGPI_LIB)
 
 endif
 
-LIB = -lpigpio -lrt -lwiringPi -lm -lbcm2835 -lm
+LIB = -lpigpio -lrt -lwiringPi -lm
 
 ${TARGET}:${OBJ_O}
 	$(CC) $(CFLAGS) $(OBJ_O) -o $@ $(LIB) -lm

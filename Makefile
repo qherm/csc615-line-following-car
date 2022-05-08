@@ -37,7 +37,7 @@ else ifeq ($(USELIB), USE_WIRINGPI_LIB)
 
 endif
 
-LIB = -lpigpio -lrt -lwiringPi -lm 
+LIB = -lpigpio -lrt -lwiringPi -lm -pthread
 
 # DIR_run_motor = ./lib/run_motor
 # DIR_sensors = ./lib/sensors

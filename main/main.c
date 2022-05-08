@@ -12,9 +12,9 @@ int main()
 		return 1;
 	}
 	
-	gpioSetMode(TRL, PI_INPUT);
-    gpioSetMode(TRM, PI_INPUT);
-	gpioSetMode(TRR, PI_INPUT);
+	gpioSetMode(IRL, PI_INPUT);
+    gpioSetMode(IRM, PI_INPUT);
+	gpioSetMode(IRR, PI_INPUT);
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread, object_middle_thread;
 	int line_left_return, line_middle_return, line_right_return, object_middle_return;

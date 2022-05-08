@@ -3,12 +3,11 @@
 * Name: Shane Waxler
 * Student ID: 918415347
 * Github ID: ShaneWaxler1
-* Project: Assignment3 - Start Your Motors
+* Project: Final Project
 *
-* File: main.h
+* File: motordriver.h
 *
-* Description: Run a motor forwards and backwards using 
-*	       a waveshare hat.
+* Description: Run a motor.
 *
 *********************************************************/
 #ifndef __MAIN_H__

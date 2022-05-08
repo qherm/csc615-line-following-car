@@ -29,17 +29,17 @@ void *TRSensor(void *arg){//White or black line
   return NULL;
 }
 
-void *IRInffarred(void *arg){//go or stop
-  while(1){
-    delay(100);
-    if(digitalRead(IRR) == LOW){
-      printf("Stop\n");
-    }
-    else{
-      printf("Go\n");
-    }
-  }
-}
+// void *IRInffarred(void *arg){//go or stop
+//   while(1){
+//     delay(100);
+//     if(digitalRead(IRR) == LOW){
+//       printf("Stop\n");
+//     }
+//     else{
+//       printf("Go\n");
+//     }
+//   }
+// }
  
 int main(void)
 {

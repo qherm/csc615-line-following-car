@@ -22,5 +22,4 @@
 #define IRR 4
 #define IRM 5
 
-void *TRSensor(void *arg);
-void *IRInffarred(void *arg);
+void *ReadSensor(void *arg);

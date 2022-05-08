@@ -14,7 +14,7 @@ DIR_sensors = ./lib/sensors
 OBJ_C = $(wildcard ${DIR_OBJ}/*.c ${DIR_Examples}/*.c ${DIR_Config}/*.c ${DIR_MotorDriver}/*.c ${DIR_PCA9685}/*.c )
 OBJ_O = $(patsubst %.c,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
 
-TARGET = final_project
+TARGET = main
 #BIN_TARGET = ${DIR_BIN}/${TARGET}
 
 CC = gcc

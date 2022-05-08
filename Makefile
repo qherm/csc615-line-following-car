@@ -8,6 +8,8 @@ DIR_BIN = ./bin
 DIR_Config = ./lib/Config
 DIR_MotorDriver = ./lib/MotorDriver
 DIR_PCA9685 = ./lib/PCA9685
+DIR_main = ./main
+
 DIR_run_motor = ./lib/run_motor
 DIR_sensors = ./lib/sensors
 
@@ -37,6 +39,9 @@ LIB = -lpigpio -lrt -lwiringPi -lm
 
 ${TARGET}:${OBJ_O}
 	$(CC) $(CFLAGS) $(OBJ_O) -o $@ $(LIB) -lm
+
+${DIR_BIN}/%.o : $(DIR_main)/%.c
+	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_OBJ) -I $(DIR_Config) -I $(DIR_MotorDriver) -I $(DIR_PCA9685)
 
 ${DIR_BIN}/%.o : $(DIR_sensors)/%.c
 	$(CC) $(CFLAGS) -c  $< -o $@ $(LIB) -I $(DIR_OBJ) -I $(DIR_Config) -I $(DIR_MotorDriver) -I $(DIR_PCA9685)

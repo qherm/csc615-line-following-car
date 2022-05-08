@@ -12,6 +12,7 @@
 *
 *********************************************************/
 #include "run_motor.h"
+#include "MotorDriver.h"
 #include <pigpio.h>
 #include <unistd.h>
 

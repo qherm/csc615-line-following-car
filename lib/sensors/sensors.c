@@ -11,7 +11,7 @@
 *
 **************************************************************/
 
-#include "thread.h"
+#include "sensors.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <pigpio.h>

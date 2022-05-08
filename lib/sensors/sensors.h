@@ -10,6 +10,9 @@
 * Description: Header file for the sensor threading.
 *
 **************************************************************/
+#ifndef __SENSORS_H__
+#define __SENSORS_H__
+
 #include <wiringPi.h>
 #include <stdio.h>
 #include <pthread.h>
@@ -22,4 +25,6 @@
 #define IRR 4
 #define IRM 5
 
-void *ReadSensor(void *arg);
+void *sense(void *arg);
+
+#endif

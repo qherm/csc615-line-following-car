@@ -18,12 +18,13 @@
 #include <pthread.h>
 #include <unistd.h>
 
+// Pin numbers using GPIO nums
 #define TRL 0   // TR Sensor Left
 #define TRR 1
 #define TRM 2
-#define IRL 3   // IR Sensor Left
-#define IRR 4
-#define IRM 5
+#define IRL 24   // IR Sensor Left
+#define IRR 18
+#define IRM 23
 
 typedef struct sensor 
 {

@@ -3,7 +3,7 @@
 #include <pigpio.h>
 #include <pthread.h>
 #include "sensors.h"
-#include "run_motor.h"
+// #include "run_motor.h"
 #include "MotorDriver.h"
 
 int main()
@@ -42,10 +42,11 @@ int main()
 
 	if(DEV_ModuleInit())
         exit(0);
-			
-	init_motors();
+
+	Motor_Init();
 
 	Motor_Run(MOTORA, FORWARD, 100);
+	Motor_Run(MOTORB, FORWARD, 100);
 
 	// while(1)
 	// {

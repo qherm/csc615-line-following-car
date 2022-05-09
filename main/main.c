@@ -3,11 +3,24 @@
 #include <pigpio.h>
 #include <pthread.h>
 #include "sensors.h"
+#include <stdlib.h>
+#include <signal.h>
 // #include "run_motor.h"
 #include "MotorDriver.h"
 
+void Handler(int signo)
+{
+  printf("stopping\n");
+  Motor_Stop(MOTORA);
+  Motor_Stop(MOTORB);
+  DEV_ModuleExit();
+
+  exit(0);
+}
+
 int main()
 {
+  signal(SIGINT, Handler);
 	// if(gpioInitialise() < 0)
 	// {
 	// 	fprintf(stderr, "pigpio initialise failure\n");
@@ -41,13 +54,14 @@ int main()
   	// line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
 
 	if(DEV_ModuleInit())
-        exit(0);
+    return 1;
 
 	Motor_Init();
 
 	Motor_Run(MOTORA, FORWARD, 100);
 	Motor_Run(MOTORB, FORWARD, 100);
-
+  while(1){}
+  DEV_ModuleExit();
 	// while(1)
 	// {
 	// 	printf("Line left read: %i\n", line_left.read);

@@ -26,7 +26,9 @@ int main()
 	gpioSetMode(BUTTON_PIN, PI_INPUT);
 
 	printf("button not read yet\n");
-	while(!gpioRead(BUTTON_PIN)){}
+	while(!gpioRead(BUTTON_PIN)){
+		printf("\nBUTTON READ: %d\n", gpioRead(BUTTON_PIN));
+	}
 	printf("button read\n");
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread, object_middle_thread;
@@ -92,6 +94,9 @@ int main()
 			Motor_Run(LEFT_MOTOR, FORWARD, 0);
 			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		}
+
+		//temporary
+		break;
 	}
 
 	// pthread_join(obstacle_thread, NULL);

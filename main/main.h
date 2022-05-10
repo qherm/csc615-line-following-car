@@ -14,6 +14,6 @@
 #define RIGHT_MOTOR MOTORB
 #define BUTTON_PIN 26
 
-void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button);
+int driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button);
 
 #endif

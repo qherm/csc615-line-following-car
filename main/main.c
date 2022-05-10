@@ -4,9 +4,6 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 	int i = 0;
 	while(!start_stop_button->read)
 	{
-		i++;
-		i = i%10;
-    	printf("HERE%d\n", i);
 		// LineSensor.read==1: sensor reads white
 		// LineSensor.read==0: sensor reads black
 		if(line_left->read && line_middle->read && line_right->read){
@@ -43,7 +40,7 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		}
 	}
-	printf("AT THE END\n");
+	printf("Driving finished\n");
 	return;
 }
 
@@ -97,18 +94,15 @@ int main()
 		sleep(1);
 	}
 	printf("GO!\n");
-
-	Motor_Run(LEFT_MOTOR, FORWARD, 100);
-	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
 	
 	driving_logic(&line_left, &line_middle, &line_right, &start_stop_button);
 
-  printf("I'm here");
+  	printf("I have reached this print statement");
 	// pthread_join(obstacle_thread, NULL);
 	pthread_join(line_left_thread, NULL);
 	pthread_join(line_middle_thread, NULL);
 	pthread_join(line_right_thread, NULL);
-  pthread_join(start_stop_button_thread, NULL);
+  	pthread_join(start_stop_button_thread, NULL);
   	
 	printf("stopping\n");
 	Motor_Stop(MOTORA);

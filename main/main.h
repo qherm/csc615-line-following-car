@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include "sensors.h"
 #include <stdlib.h>
+#include <stdbool.h>
 #include <signal.h>
 #include "MotorDriver.h"
 

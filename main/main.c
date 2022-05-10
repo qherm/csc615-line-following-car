@@ -1,7 +1,6 @@
 #include "main.h"
 
 void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button){
-	int i = 0;
 	while(!start_stop_button->read)
 	{
 		// LineSensor.read==1: sensor reads white
@@ -40,7 +39,7 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		}
 	}
-	printf("Driving finished\n");
+	printf("Driving finished\n"); // 2. Prints properly
 	return;
 }
 
@@ -93,11 +92,10 @@ int main()
 		i--;
 		sleep(1);
 	}
-	printf("GO!\n");
-	
-	driving_logic(&line_left, &line_middle, &line_right, &start_stop_button);
 
-  	printf("I have reached this print statement");
+	printf("GO!\n"); // 1. Prints properly
+	driving_logic(&line_left, &line_middle, &line_right, &start_stop_button);
+  	printf("I have reached this print statement\n"); // 3. Does not print
 	// pthread_join(obstacle_thread, NULL);
 	pthread_join(line_left_thread, NULL);
 	pthread_join(line_middle_thread, NULL);

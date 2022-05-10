@@ -59,6 +59,8 @@ int main()
 		// LineSensor.read==0: sensor reads black
 		if(line_left.read && line_middle.read && line_right.read){
 			// Maybe rotate in arbitrary direction
+			Motor_Run(LEFT_MOTOR, FORWARD, 0);
+			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		} else if(line_left.read && line_middle.read && !line_right.read){
 			// Turn right
 			Motor_Run(LEFT_MOTOR, FORWARD, 100);

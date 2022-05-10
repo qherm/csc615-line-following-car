@@ -99,9 +99,13 @@ int main()
 	
 	// pthread_join(obstacle_thread, NULL);
 	pthread_join(line_left_thread, NULL);
+	printf("HERE 1");
 	pthread_join(line_middle_thread, NULL);
+	printf("HERE 2");
 	pthread_join(line_right_thread, NULL);
+	printf("HERE 3");
   	pthread_join(start_stop_button_thread, NULL);
+	printf("HERE 4");
   	
 	printf("stopping\n");
 	Motor_Stop(MOTORA);

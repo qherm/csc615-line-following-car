@@ -30,6 +30,7 @@ typedef struct sensor
 {
 	int pin;
 	volatile int read;
+	bool cont;
 } sensor;
 
 

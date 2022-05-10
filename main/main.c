@@ -52,33 +52,37 @@ int main()
 	}
 
 	gpioSetMode(IRL, PI_INPUT);
-  gpioSetMode(IRM, PI_INPUT);
+	gpioSetMode(IRM, PI_INPUT);
 	gpioSetMode(IRR, PI_INPUT);
 	gpioSetMode(BUTTON_PIN, PI_INPUT);
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread,  start_stop_button_thread, object_middle_thread;
 	int line_left_return, line_middle_return, line_right_return, start_stop_button_return, object_middle_return;
-	
+
 	sensor line_right, line_middle, line_left, object_middle, start_stop_button;
 
-  line_left.pin = IRL;
-  line_left.read = 0;
+	line_left.pin = IRL;
+	line_left.read = 0;
+	line_left.cont = true;
 
 	line_middle.pin = IRM;
-  line_middle.read = 0;
+	line_middle.read = 0;
+	line_middle.cont = true;
 
 	line_right.pin = IRR;
 	line_right.read = 0;
+	line_right.cont = true;
 
-  start_stop_button.pin = BUTTON_PIN;
-  start_stop_button.read = 0;
+	start_stop_button.pin = BUTTON_PIN;
+	start_stop_button.read = 0;
+	start_stop_button.cont = true;
 
 	line_left_return = pthread_create(&line_left_thread, NULL, sense, &line_left);
 	line_middle_return = pthread_create(&line_middle_thread, NULL, sense, &line_middle);
-  line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
-  start_stop_button_return = pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
+	line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
+	start_stop_button_return = pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
 
-  while(!start_stop_button.read){}
+	while(!start_stop_button.read){}
 
 	if(DEV_ModuleInit())
     	return 1;
@@ -87,13 +91,14 @@ int main()
 
 	printf("Driving in ");
 	int i = 3;
-	while(i>0){
+	while(i>0)
+	{
 		printf("%d\n",i);
 		i--;
 		sleep(1);
 	}
+
 	printf("GO!\n"); // 1. Prints properly
-	
 	
 	while(!start_stop_button.read)
 	{
@@ -135,7 +140,10 @@ int main()
 	}
 
   	printf("I have reached this print statement\n"); // 3. Does not print
-	
+	line_left.cont = false;
+	line_middle.cont = false;
+	line_right.cont = false;
+	start_stop_button.cont = false;
 	// pthread_join(obstacle_thread, NULL);
 	pthread_join(line_left_thread, NULL);
 	printf("HERE 1");

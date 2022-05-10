@@ -96,6 +96,7 @@ int main()
 	printf("GO!\n"); // 1. Prints properly
 	driving_logic(&line_left, &line_middle, &line_right, &start_stop_button);
   	printf("I have reached this print statement\n"); // 3. Does not print
+	
 	// pthread_join(obstacle_thread, NULL);
 	pthread_join(line_left_thread, NULL);
 	pthread_join(line_middle_thread, NULL);

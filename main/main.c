@@ -1,7 +1,7 @@
 #include "main.h"
 
-void driving_logic(sensor *left, sensor *middle, sensor *right, sensor *start_stop_button){
-	while(!start_stop_button.read)
+void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button){
+	while(!start_stop_button->read)
 	{
     	printf("HERE\n");
 		// LineSensor.read==1: sensor reads white

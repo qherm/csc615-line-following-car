@@ -50,6 +50,15 @@ int main()
 
 	Motor_Init();
 
+	printf("Driving in ");
+	int i = 3;
+	while(i>0){
+		printf("%d\n",i);
+		i--;
+		sleep(1);
+	}
+	printf("GO!\n");
+
 	Motor_Run(LEFT_MOTOR, FORWARD, 100);
 	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
 	
@@ -90,9 +99,6 @@ int main()
 			Motor_Run(LEFT_MOTOR, FORWARD, 0);
 			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		}
-
-		//temporary
-		break;
 	}
 
 	// pthread_join(obstacle_thread, NULL);

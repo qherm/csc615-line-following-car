@@ -1,14 +1,7 @@
 #include "main.h"
 
-void Handler(int signo)
-{
-  printf("stopping\n");
-  Motor_Stop(MOTORA);
-  Motor_Stop(MOTORB);
-  gpioTerminate();
-  DEV_ModuleExit();
+void driving_logic(left, middle, right){
 
-  exit(0);
 }
 
 int main()
@@ -19,31 +12,34 @@ int main()
 		return 1;
 	}
 
-  	// signal(SIGINT, Handler);	
 	gpioSetMode(IRL, PI_INPUT);
-  	gpioSetMode(IRM, PI_INPUT);
+  gpioSetMode(IRM, PI_INPUT);
 	gpioSetMode(IRR, PI_INPUT);
 	gpioSetMode(BUTTON_PIN, PI_INPUT);
 
-	while(!gpioRead(BUTTON_PIN)){}
-
-	pthread_t line_left_thread, line_middle_thread, line_right_thread, object_middle_thread;
-	int line_left_return, line_middle_return, line_right_return, object_middle_return;
+	pthread_t line_left_thread, line_middle_thread, line_right_thread,  start_stop_button_thread, object_middle_thread;
+	int line_left_return, line_middle_return, line_right_return, start_stop_button_return, object_middle_return;
 	
-	sensor line_right, line_middle, line_left, object_middle;
+	sensor line_right, line_middle, line_left, object_middle, start_stop_button;
 
-  	line_left.pin = IRL;
-  	line_left.read = 0;
+  line_left.pin = IRL;
+  line_left.read = 0;
 
 	line_middle.pin = IRM;
-  	line_middle.read = 0;
+  line_middle.read = 0;
 
 	line_right.pin = IRR;
 	line_right.read = 0;
 
+  start_stop_button.pin = BUTTON_PIN;
+  start_stop_button.read = 0;
+
 	line_left_return = pthread_create(&line_left_thread, NULL, sense, &line_left);
 	line_middle_return = pthread_create(&line_middle_thread, NULL, sense, &line_middle);
-  	line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
+  line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
+  start_stop_button_return = pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
+
+  while(!start_stop_button.read){}
 
 	if(DEV_ModuleInit())
     	return 1;
@@ -62,8 +58,9 @@ int main()
 	Motor_Run(LEFT_MOTOR, FORWARD, 100);
 	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
 	
-	while(!gpioRead(BUTTON_PIN))
+	while(!start_stop_button.read)
 	{
+    printf("HERE\n");
 		// LineSensor.read==1: sensor reads white
 		// LineSensor.read==0: sensor reads black
 		if(line_left.read && line_middle.read && line_right.read){
@@ -100,11 +97,12 @@ int main()
 			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		}
 	}
-
+  printf("I'm here");
 	// pthread_join(obstacle_thread, NULL);
 	pthread_join(line_left_thread, NULL);
 	pthread_join(line_middle_thread, NULL);
 	pthread_join(line_right_thread, NULL);
+  pthread_join(start_stop_button_thread, NULL);
   	
 	printf("stopping\n");
 	Motor_Stop(MOTORA);

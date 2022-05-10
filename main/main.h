@@ -12,6 +12,6 @@
 
 #define LEFT_MOTOR MOTORA
 #define RIGHT_MOTOR MOTORB
-#define BUTTON_PIN 6
+#define BUTTON_PIN 26
 
 #endif

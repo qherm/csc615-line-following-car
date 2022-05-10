@@ -23,8 +23,8 @@ int main()
 	gpioSetMode(IRL, PI_INPUT);
   	gpioSetMode(IRM, PI_INPUT);
 	gpioSetMode(IRR, PI_INPUT);
-	gpioSetMode(26, PI_INPUT);
-	printf("%d", gpioRead(26));
+	gpioSetMode(BUTTON_PIN, PI_INPUT);
+	printf("%d", gpioRead(BUTTON_PIN));
 
 	printf("button not read yet \n");
 	while(!gpioRead(BUTTON_PIN)){

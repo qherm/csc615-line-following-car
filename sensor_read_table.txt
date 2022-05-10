@@ -1,10 +1,10 @@
 Line Sensor: (1=white, 0=black)
 L   M   R
 1   1   1   Odd case. Maybe rotate in arbitrary direction.
-1   1   0   Slightly odd case. Probably rotate left.
-1   0   1   Odd case (likely bad sensor read). Maybe stop.
-1   0   0   Turn left
-0   1   1   Slightly odd case. Probably rotate right.
-0   1   0   Move forward
-0   0   1   Turn right
-0   0   0   Rotate in arbitrary direction
+1   1   0   Turn right.
+1   0   1   Move forward
+1   0   0   Rotate right.
+0   1   1   Turn left.
+0   1   0   Odd case. Stop until sensors read properly.
+0   0   1   Rotate left.
+0   0   0   Either stop or rotate in arbitrary direction.

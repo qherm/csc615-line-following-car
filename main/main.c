@@ -65,13 +65,25 @@ int main()
 	{
 		// LineSensor.read==1: sensor reads white
 		// LineSensor.read==0: sensor reads black
-		if(left_line.read && right_line.read && middle_line.read){
-			// add behavior
-		} else if(left_line.read && right_line.read){
-			// add behavior
-		} else if(left_line.read && middle_line.read){
-			// add behavior (likely rotate left)
-		} else if(right_line.read && )
+		if(line_left.read && line_middle.read && line_right.read){
+			// Maybe rotate in arbitrary direction
+		} else if(line_left.read && line_middle.read && !line_right.read){
+			// Turn right
+		} else if(line_left.read && !line_middle.read && line_right.read){
+			// Move forward
+			Motor_Run(MOTORA, FORWARD, 100);
+			Motor_Run(MOTORB, FORWARD, 100);
+		} else if(line_left.read && !line_middle.read && !line_right.read){
+			// Rotate right
+		} else if(!line_left.read && line_middle.read && line_right.read){
+			// Turn left
+		} else if(!line_left.read && line_middle.read && !line_right.read){
+			// Odd case. Probably stop until sensors read properly.
+		} else if(!line_left.read && !line_middle.read && line_right.read){
+			// Rotate left.
+		} else if(!line_left.read && !line_middle.read && !line_right.read){
+			// Either wait for sensors to read properly or rotate in arbitrary direction.
+		}
 		printf("Line left read: %i\n", line_left.read);
 		printf("Line middle read: %i\n", line_middle.read);
 		printf("Line right read: %i\n", line_right.read);

@@ -31,8 +31,8 @@
 #define MOTORB       1
 
 typedef enum {
-    FORWARD = 0,
-    BACKWARD = 1,
+    FORWARD = 1,
+    BACKWARD = 0,
 } DIR;
 
 void Motor_Init(void);

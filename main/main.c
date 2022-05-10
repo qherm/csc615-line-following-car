@@ -18,14 +18,12 @@ int main()
 		fprintf(stderr, "pigpio initialise failure\n");
 		return 1;
 	}
-  signal(SIGINT, Handler);	
+
+  	signal(SIGINT, Handler);	
 	gpioSetMode(IRL, PI_INPUT);
   	gpioSetMode(IRM, PI_INPUT);
 	gpioSetMode(IRR, PI_INPUT);
-
-  	printf("left pin %d",IRL);
-  	printf("right pin %d",IRR);
-  	printf("middle pin %d",IRM);
+	gpioSetMode(BUTTON_PIN, PI_INPUT);
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread, object_middle_thread;
 	int line_left_return, line_middle_return, line_right_return, object_middle_return;
@@ -44,6 +42,8 @@ int main()
 	line_left_return = pthread_create(&line_left_thread, NULL, sense, &line_left);
 	line_middle_return = pthread_create(&line_middle_thread, NULL, sense, &line_middle);
   	line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
+
+	while(!gpioRead(BUTTON_PIN)){}
 
 	if(DEV_ModuleInit())
     	return 1;

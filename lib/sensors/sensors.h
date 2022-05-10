@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 // Pin numbers using GPIO nums
 #define TRL 0   // TR Sensor Left

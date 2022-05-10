@@ -100,6 +100,10 @@ int main()
 	pthread_join(line_middle_thread, NULL);
 	pthread_join(line_right_thread, NULL);
   	
+	printf("stopping\n");
+	Motor_Stop(MOTORA);
+	Motor_Stop(MOTORB);
+	gpioTerminate();
 	DEV_ModuleExit();
 
 	return 0;

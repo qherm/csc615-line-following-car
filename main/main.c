@@ -69,21 +69,25 @@ int main()
 			Motor_Run(RIGHT_MOTOR, FORWARD, 100);
 		} else if(line_left.read && !line_middle.read && !line_right.read){
 			// Rotate right
+			Motor_Run(LEFT_MOTOR, FORWARD, 100);
+			Motor_Run(RIGHT_MOTOR, BACKWARD, 100);
 		} else if(!line_left.read && line_middle.read && line_right.read){
 			// Turn left
 			Motor_Run(LEFT_MOTOR, FORWARD, 0);
 			Motor_Run(RIGHT_MOTOR, FORWARD, 100);
 		} else if(!line_left.read && line_middle.read && !line_right.read){
 			// Odd case. Probably stop until sensors read properly.
+			Motor_Run(LEFT_MOTOR, FORWARD, 0);
+			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		} else if(!line_left.read && !line_middle.read && line_right.read){
 			// Rotate left.
+			Motor_Run(LEFT_MOTOR, BACKWARD, 100);
+			Motor_Run(RIGHT_MOTOR, FORWARD, 100);
 		} else if(!line_left.read && !line_middle.read && !line_right.read){
 			// Either wait for sensors to read properly or rotate in arbitrary direction.
+			Motor_Run(LEFT_MOTOR, FORWARD, 0);
+			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		}
-		printf("Line left read: %i\n", line_left.read);
-		printf("Line middle read: %i\n", line_middle.read);
-		printf("Line right read: %i\n", line_right.read);
-		usleep(500000);
 	}
 
 	// pthread_join(obstacle_thread, NULL);

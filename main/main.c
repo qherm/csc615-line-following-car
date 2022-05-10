@@ -23,13 +23,15 @@ int main()
 	gpioSetMode(IRL, PI_INPUT);
   	gpioSetMode(IRM, PI_INPUT);
 	gpioSetMode(IRR, PI_INPUT);
-	gpioSetMode(BUTTON_PIN, PI_INPUT);
+	gpioSetMode(26, PI_INPUT);
+	printf("%d", gpioRead(26));
 
-	printf("button not read yet\n");
+	printf("button not read yet \n");
 	while(!gpioRead(BUTTON_PIN)){
 		printf("\nBUTTON READ: %d\n", gpioRead(BUTTON_PIN));
 	}
 	printf("button read\n");
+	return 0;
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread, object_middle_thread;
 	int line_left_return, line_middle_return, line_right_return, object_middle_return;

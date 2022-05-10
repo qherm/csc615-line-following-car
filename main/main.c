@@ -1,6 +1,6 @@
 #include "main.h"
 
-void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button){
+int driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button){
 	while(!start_stop_button->read)
 	{
 		// LineSensor.read==1: sensor reads white
@@ -40,7 +40,7 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 		}
 	}
 	printf("Driving finished\n"); // 2. Prints properly
-	return;
+	return 0;
 }
 
 int main()

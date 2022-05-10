@@ -1,18 +1,11 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <pigpio.h>
-#include <pthread.h>
-#include "sensors.h"
-#include <stdlib.h>
-#include <signal.h>
-// #include "run_motor.h"
-#include "MotorDriver.h"
+#include "main.h"
 
 void Handler(int signo)
 {
   printf("stopping\n");
   Motor_Stop(MOTORA);
   Motor_Stop(MOTORB);
+  gpioTerminate();
   DEV_ModuleExit();
 
   exit(0);
@@ -35,23 +28,23 @@ int main()
   	printf("right pin %d",IRR);
   	printf("middle pin %d",IRM);
 
-	pthread_t line_left_thread, line_middle_thread, line_right_thread, object_middle_thread;
-	int line_left_return, line_middle_return, line_right_return, object_middle_return;
+	// pthread_t line_left_thread, line_middle_thread, line_right_thread, object_middle_thread;
+	// int line_left_return, line_middle_return, line_right_return, object_middle_return;
 	
-	sensor line_right, line_middle, line_left, object_middle;
+	// sensor line_right, line_middle, line_left, object_middle;
 
-  	line_left.pin = IRL;
-  	line_left.read = 0;
+  	// line_left.pin = IRL;
+  	// line_left.read = 0;
 
-	line_middle.pin = IRM;
-  	line_middle.read = 0;
+	// line_middle.pin = IRM;
+  	// line_middle.read = 0;
 
-	line_right.pin = IRR;
-	line_right.read = 0;
+	// line_right.pin = IRR;
+	// line_right.read = 0;
 
-	line_left_return = pthread_create(&line_left_thread, NULL, sense, &line_left);
-	line_middle_return = pthread_create(&line_middle_thread, NULL, sense, &line_middle);
-  	line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
+	// line_left_return = pthread_create(&line_left_thread, NULL, sense, &line_left);
+	// line_middle_return = pthread_create(&line_middle_thread, NULL, sense, &line_middle);
+  	// line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
 
 	if(DEV_ModuleInit())
     	return 1;
@@ -84,16 +77,16 @@ int main()
 		} else if(!line_left.read && !line_middle.read && !line_right.read){
 			// Either wait for sensors to read properly or rotate in arbitrary direction.
 		}
-		printf("Line left read: %i\n", line_left.read);
-		printf("Line middle read: %i\n", line_middle.read);
-		printf("Line right read: %i\n", line_right.read);
+		// printf("Line left read: %i\n", line_left.read);
+		// printf("Line middle read: %i\n", line_middle.read);
+		// printf("Line right read: %i\n", line_right.read);
 		usleep(500000);
 	}
 
 	// pthread_join(obstacle_thread, NULL);
-	pthread_join(line_left_thread, NULL);
-	pthread_join(line_middle_thread, NULL);
-	pthread_join(line_right_thread, NULL);
+	// pthread_join(line_left_thread, NULL);
+	// pthread_join(line_middle_thread, NULL);
+	// pthread_join(line_right_thread, NULL);
   	
 	DEV_ModuleExit();
 

@@ -61,14 +61,18 @@ int main()
 			// Maybe rotate in arbitrary direction
 		} else if(line_left.read && line_middle.read && !line_right.read){
 			// Turn right
+			Motor_Run(LEFT_MOTOR, FORWARD, 100);
+			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		} else if(line_left.read && !line_middle.read && line_right.read){
 			// Move forward
-			Motor_Run(MOTORA, FORWARD, 100);
-			Motor_Run(MOTORB, FORWARD, 100);
+			Motor_Run(LEFT_MOTOR, FORWARD, 100);
+			Motor_Run(RIGHT_MOTOR, FORWARD, 100);
 		} else if(line_left.read && !line_middle.read && !line_right.read){
 			// Rotate right
 		} else if(!line_left.read && line_middle.read && line_right.read){
 			// Turn left
+			Motor_Run(LEFT_MOTOR, FORWARD, 0);
+			Motor_Run(RIGHT_MOTOR, FORWARD, 100);
 		} else if(!line_left.read && line_middle.read && !line_right.read){
 			// Odd case. Probably stop until sensors read properly.
 		} else if(!line_left.read && !line_middle.read && line_right.read){

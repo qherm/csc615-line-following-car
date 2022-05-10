@@ -1,10 +1,10 @@
 #include "main.h"
 
 void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button){
-	int i = 0
+	int i = 0;
 	while(!start_stop_button->read)
 	{
-		i = i++;
+		i++;
 		i = i%10;
     	printf("HERE%d\n", i);
 		// LineSensor.read==1: sensor reads white
@@ -43,6 +43,7 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
 		}
 	}
+	printf("AT THE END\n");
 	return;
 }
 

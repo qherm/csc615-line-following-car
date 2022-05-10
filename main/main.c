@@ -24,14 +24,8 @@ int main()
   	gpioSetMode(IRM, PI_INPUT);
 	gpioSetMode(IRR, PI_INPUT);
 	gpioSetMode(BUTTON_PIN, PI_INPUT);
-	printf("%d", gpioRead(BUTTON_PIN));
 
-	printf("button not read yet \n");
-	while(!gpioRead(BUTTON_PIN)){
-		printf("\nBUTTON READ: %d\n", gpioRead(BUTTON_PIN));
-	}
-	printf("button read\n");
-	return 0;
+	while(!gpioRead(BUTTON_PIN)){}
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread, object_middle_thread;
 	int line_left_return, line_middle_return, line_right_return, object_middle_return;
@@ -59,7 +53,7 @@ int main()
 	Motor_Run(LEFT_MOTOR, FORWARD, 100);
 	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
 	
-	while(1)
+	while(!gpioRead(BUTTON_PIN))
 	{
 		// LineSensor.read==1: sensor reads white
 		// LineSensor.read==0: sensor reads black

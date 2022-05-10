@@ -3,7 +3,7 @@
 void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button){
 	while(!start_stop_button->read)
 	{
-    	printf("HERE\n");
+    	printf("HERE%d\n", start_stop_button->read);
 		// LineSensor.read==1: sensor reads white
 		// LineSensor.read==0: sensor reads black
 		if(line_left->read && line_middle->read && line_right->read){

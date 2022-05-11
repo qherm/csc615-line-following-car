@@ -138,7 +138,7 @@ int main()
 	pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
 	pthread_create(&obstacle_middle_thread, NULL, sense, &obstacle_middle);
 
-	while(!start_stop_button->read){}
+	while(!start_stop_button.read){}
 
 	if(DEV_ModuleInit())
     	return 1;

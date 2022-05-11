@@ -35,8 +35,6 @@ typedef struct sensor
 	bool cont;
 } sensor;
 
-sensor* new_sensor(int pin);
 void *sense(void *arg);
-void destroy_sensor(sensor* sensor);
 
 #endif

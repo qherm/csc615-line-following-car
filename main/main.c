@@ -58,6 +58,7 @@ int main()
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread,  start_stop_button_thread, object_middle_thread;
 	
+  printf("HERE\n");
 	sensor* line_left = new_sensor(IRL);
 	sensor* line_middle = new_sensor(IRM);
 	sensor* line_right = new_sensor(IRR);
@@ -71,7 +72,7 @@ int main()
 	pthread_create(&line_right_thread, NULL, sense, &line_right);
 	pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
 
-	while(!start_stop_button.read){}
+	while(!start_stop_button->read){}
 
 	if(DEV_ModuleInit())
     	return 1;

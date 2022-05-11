@@ -20,11 +20,9 @@
 
 sensor* new_sensor(int pin){
 	sensor* s = malloc(sizeof(sensor));
-	if(s){
-		s->pin = pin;
-		s->read = 0;
-		s->cont = true;
-	}
+	s->pin = pin;
+	s->read = 0;
+	s->cont = true;
 	return s;
 }
 
@@ -32,8 +30,7 @@ void destroy_sensor(sensor* sensor){
 	free(sensor);
 }
 
-void* sense(void* ptr)
-{
+void* sense(void* ptr){
 	sensor* s = (struct sensor*) ptr;
 	int pin = s->pin;
 	printf("In thread. Pin number %d\n",pin);

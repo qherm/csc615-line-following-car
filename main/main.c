@@ -63,8 +63,7 @@ int main()
 	sensor sensors[5] = {line_right, line_middle, line_left, object_middle, start_stop_button};
 	pthread_t threads[5] = 
 
-	for(int i = 0; i < 5; i++)
-	{
+	for(int i = 0; i < 5; i++){
 		sensors[i].read = 0;
 		sensors[i].cont = true;
 	}

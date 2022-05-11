@@ -19,6 +19,7 @@
 #include <pthread.h>
 
 sensor* new_sensor(int pin){
+	console.log("IN sense\n");
 	sensor* s;
 	s->pin = pin;
 	s->read = 0;

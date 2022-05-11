@@ -34,7 +34,7 @@ typedef struct sensor
 	bool cont;
 } sensor;
 
-sensor* new_sensor(int pin, volatile int read, bool cont);
+sensor* new_sensor(int pin);
 void *sense(void *arg);
 
 #endif

@@ -13,8 +13,10 @@
 
 #define LEFT_MOTOR MOTORA
 #define RIGHT_MOTOR MOTORB
-#define BUTTON_PIN 26
 
-int driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button);
+void countdown();
+void stop_all();
+void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button);
+void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle);
 
 #endif

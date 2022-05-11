@@ -23,10 +23,11 @@
 // Pin numbers using GPIO nums
 #define TRL 0   // TR Sensor Left
 #define TRR 1
-#define TRM 2
+#define TRM 26
 #define IRL 24   // IR Sensor Left
 #define IRR 18
 #define IRM 23
+#define BUTTON_PIN 26
 
 typedef struct sensor 
 {

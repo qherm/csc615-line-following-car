@@ -1,11 +1,38 @@
 #include "main.h"
 
-int driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button){
-	while(!start_stop_button->read)
-	{
+void countdown(){
+	printf("Driving in ");
+	int i = 3;
+	while(i>0){
+		printf("%d\n",i);
+		i--;
+		sleep(1);
+	}
+
+	printf("GO!\n");
+}
+
+void stop_all(){
+	printf("Stopping\n");
+	Motor_Stop(MOTORA);
+	Motor_Stop(MOTORB);
+	gpioTerminate();
+	DEV_ModuleExit();
+}
+
+void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle){
+	while(!start_stop_button->read){
 		// LineSensor.read==1: sensor reads white
 		// LineSensor.read==0: sensor reads black
-		if(line_left->read && line_middle->read && line_right->read){
+		if(obstacle_middle->read){
+			Motor_Run(LEFT_MOTOR, FORWARD, 0);
+			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
+			sleep(5);
+			if(obstacle_middle->read){
+				// If obstacle still there after ~5 seconds, start obstacle avoidance
+				avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle);
+			}
+		} else if(line_left->read && line_middle->read && line_right->read){
 			// Maybe rotate in arbitrary direction
 			Motor_Run(LEFT_MOTOR, FORWARD, 0);
 			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
@@ -40,7 +67,32 @@ int driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, se
 		}
 	}
 	printf("Driving finished\n"); // 2. Prints properly
-	return 0;
+	return;
+}
+
+void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle){
+	// Rotate left 90 degrees
+	Motor_Run(LEFT_MOTOR, BACKWARD, 100);
+	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
+	sleep(1);
+
+	// Move forward for a moment
+	Motor_Run(LEFT_MOTOR, FORWARD, 100);
+	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
+	sleep(2);
+
+	// Rotate right 90 degrees
+	Motor_Run(LEFT_MOTOR, FORWARD, 100);
+	Motor_Run(RIGHT_MOTOR, BACKWARD, 100);
+	sleep(1);
+
+	// Move forward until see line
+	Motor_Run(LEFT_MOTOR, FORWARD, 100);
+	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
+	sleep(2);
+	while(line_left->read && line_middle->read && line_right->read){}
+
+	return;
 }
 
 int main()
@@ -55,9 +107,10 @@ int main()
 	gpioSetMode(IRM, PI_INPUT);
 	gpioSetMode(IRR, PI_INPUT);
 	gpioSetMode(BUTTON_PIN, PI_INPUT);
+	gpioSetMode(TRM, PI_INPUT);
 
-	pthread_t line_left_thread, line_middle_thread, line_right_thread,  start_stop_button_thread, object_middle_thread;
-	sensor line_left, line_middle, line_right, start_stop_button;
+	pthread_t line_left_thread, line_middle_thread, line_right_thread,  start_stop_button_thread, obstacle_middle_thread;
+	sensor line_left, line_middle, line_right, start_stop_button, obstacle_middle;
 
 	line_left.pin = IRL;
 	line_left.read = 0;
@@ -75,10 +128,15 @@ int main()
 	start_stop_button.read = 0;
 	start_stop_button.cont = true;
 
+	obstacle_middle.pin = TRM;
+	obstacle_middle.read = 0;
+	obstacle_middle.cont = true;
+
 	pthread_create(&line_left_thread, NULL, sense, &line_left);
 	pthread_create(&line_middle_thread, NULL, sense, &line_middle);
 	pthread_create(&line_right_thread, NULL, sense, &line_right);
 	pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
+	pthread_create(&obstacle_middle_thread, NULL, sense, &obstacle_middle);
 
 	while(!start_stop_button->read){}
 
@@ -87,35 +145,23 @@ int main()
 
 	Motor_Init();
 
-	printf("Driving in ");
-	int i = 3;
-	while(i>0)
-	{
-		printf("%d\n",i);
-		i--;
-		sleep(1);
-	}
-
-	printf("GO!\n"); // 1. Prints properly
+	countdown();
 	
 	driving_logic(&line_left, &line_middle, &line_right, &start_stop_button);
 
 	line_left.cont = false;
 	line_middle.cont = false;
 	line_right.cont = false;
+	obstacle_middle.cont = false;
 	start_stop_button.cont = false;
 	
-	// pthread_join(obstacle_thread, NULL);
+	pthread_join(obstacle_middle_thread, NULL);
 	pthread_join(line_left_thread, NULL);
 	pthread_join(line_middle_thread, NULL);
 	pthread_join(line_right_thread, NULL);
   	pthread_join(start_stop_button_thread, NULL);
   	
-	printf("stopping\n");
-	Motor_Stop(MOTORA);
-	Motor_Stop(MOTORB);
-	gpioTerminate();
-	DEV_ModuleExit();
+	stop_all();
 
 	return 0;
 }

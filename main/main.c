@@ -58,11 +58,16 @@ int main()
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread,  start_stop_button_thread, object_middle_thread;
 	
-  printf("HERE\n");
 	sensor* line_left = new_sensor(IRL);
 	sensor* line_middle = new_sensor(IRM);
 	sensor* line_right = new_sensor(IRR);
 	sensor* start_stop_button = new_sensor(BUTTON_PIN);
+
+	destroy_sensor(line_left);
+	destroy_sensor(line_middle);
+	destroy_sensor(line_right);
+	destroy_sensor(start_stop_button);
+	return 0;
 
 	// sensor sensors[5] = {line_right, line_middle, line_left, object_middle, start_stop_button};
 	// pthread_t threads[5] = 

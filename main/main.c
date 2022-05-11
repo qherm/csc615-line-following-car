@@ -57,21 +57,19 @@ int main()
 	gpioSetMode(BUTTON_PIN, PI_INPUT);
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread,  start_stop_button_thread, object_middle_thread;
-	int line_left_return, line_middle_return, line_right_return, start_stop_button_return, object_middle_return;
-	sensor* line_right, line_middle, line_left, object_middle, start_stop_button;
 	
-	line_left = new_sensor(IRL);
-	line_middle = new_sensor(IRM);
-	line_right = new_sensor(IRR);
-	start_stop_button = new_sensor(BUTTON_PIN);
+	sensor* line_left = new_sensor(IRL);
+	sensor* line_middle = new_sensor(IRM);
+	sensor* line_right = new_sensor(IRR);
+	sensor* start_stop_button = new_sensor(BUTTON_PIN);
 
 	// sensor sensors[5] = {line_right, line_middle, line_left, object_middle, start_stop_button};
 	// pthread_t threads[5] = 
 
 	pthread_create(&line_left_thread, NULL, sense, &line_left);
-	line_middle_return = pthread_create(&line_middle_thread, NULL, sense, &line_middle);
-	line_right_return = pthread_create(&line_right_thread, NULL, sense, &line_right);
-	start_stop_button_return = pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
+	pthread_create(&line_middle_thread, NULL, sense, &line_middle);
+	pthread_create(&line_right_thread, NULL, sense, &line_right);
+	pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
 
 	while(!start_stop_button.read){}
 

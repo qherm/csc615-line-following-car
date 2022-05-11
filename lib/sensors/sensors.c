@@ -23,7 +23,7 @@ sensor* new_sensor(int pin){
 	sensor* s;
 	s->pin = pin;
 	s->read = 0;
-	s->bool = true;
+	s->cont = true;
 }
 
 void* sense(void* ptr)

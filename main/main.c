@@ -80,7 +80,7 @@ int main()
 	pthread_create(&line_right_thread, NULL, sense, &line_right);
 	pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
 
-	while(!start_stop_button->read){}
+	while(!start_stop_button.read){}
 
 	if(DEV_ModuleInit())
     	return 1;
@@ -88,15 +88,16 @@ int main()
 	Motor_Init();
 
 	printf("Driving in ");
-	int i = 3;
+	
+  int i = 3;
 	while(i>0)
 	{
-		printf("%d\n",i);
+		printf("%d ",i);
 		i--;
 		sleep(1);
 	}
 
-	printf("GO!\n"); // 1. Prints properly
+	printf("\nGO!\n"); 
 	
 	driving_logic(&line_left, &line_middle, &line_right, &start_stop_button);
 
@@ -105,13 +106,11 @@ int main()
 	line_right.cont = false;
 	start_stop_button.cont = false;
 	
-	// pthread_join(obstacle_thread, NULL);
 	pthread_join(line_left_thread, NULL);
 	pthread_join(line_middle_thread, NULL);
 	pthread_join(line_right_thread, NULL);
   	pthread_join(start_stop_button_thread, NULL);
   	
-	printf("stopping\n");
 	Motor_Stop(MOTORA);
 	Motor_Stop(MOTORB);
 	gpioTerminate();

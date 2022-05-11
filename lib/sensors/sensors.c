@@ -19,11 +19,17 @@
 #include <pthread.h>
 
 sensor* new_sensor(int pin){
-	console.log("IN sense\n");
-	sensor* s;
-	s->pin = pin;
-	s->read = 0;
-	s->cont = true;
+	sensor* s = malloc(sizeof(sensor));
+	if(s){
+		s->pin = pin;
+		s->read = 0;
+		s->cont = true;
+	}
+	return s;
+}
+
+void destroy_sensor(sensor* sensor){
+	free(sensor);
 }
 
 void* sense(void* ptr)

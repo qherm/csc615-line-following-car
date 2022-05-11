@@ -58,20 +58,15 @@ int main()
 
 	pthread_t line_left_thread, line_middle_thread, line_right_thread,  start_stop_button_thread, object_middle_thread;
 	int line_left_return, line_middle_return, line_right_return, start_stop_button_return, object_middle_return;
-	sensor line_right, line_middle, line_left, object_middle, start_stop_button;
+	sensor* line_right, line_middle, line_left, object_middle, start_stop_button;
 	
-	sensor sensors[5] = {line_right, line_middle, line_left, object_middle, start_stop_button};
-	pthread_t threads[5] = 
+	line_left = new_sensor(IRL);
+	line_middle = new_sensor(IRM);
+	line_right = new_sensor(IRR);
+	start_stop_button = new_sensor(BUTTON_PIN);
 
-	for(int i = 0; i < 5; i++){
-		sensors[i].read = 0;
-		sensors[i].cont = true;
-	}
-
-	line_left.pin = IRL;
-	line_middle.pin = IRM;
-	line_right.pin = IRR;
-	start_stop_button.pin = BUTTON_PIN;
+	// sensor sensors[5] = {line_right, line_middle, line_left, object_middle, start_stop_button};
+	// pthread_t threads[5] = 
 
 	pthread_create(&line_left_thread, NULL, sense, &line_left);
 	line_middle_return = pthread_create(&line_middle_thread, NULL, sense, &line_middle);

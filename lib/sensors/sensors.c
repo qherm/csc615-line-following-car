@@ -14,8 +14,16 @@
 #include "sensors.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <stdbool.h>
 #include <pigpio.h>
 #include <pthread.h>
+
+sensor* new_sensor(int pin){
+	sensor* s;
+	s->pin = pin;
+	s->read = 0;
+	s->bool = true;
+}
 
 void* sense(void* ptr)
 {

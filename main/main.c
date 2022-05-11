@@ -89,7 +89,7 @@ int main()
 
 	printf("GO!\n"); // 1. Prints properly
 	
-	driving_logic(&line_left, &line_middle, &line_right, &start_stop_button);
+	driving_logic(line_left, line_middle, line_right, start_stop_button);
 
 	line_left.cont = false;
 	line_middle.cont = false;

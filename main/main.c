@@ -91,10 +91,10 @@ int main()
 	
 	driving_logic(line_left, line_middle, line_right, start_stop_button);
 
-	line_left.cont = false;
-	line_middle.cont = false;
-	line_right.cont = false;
-	start_stop_button.cont = false;
+	line_left->cont = false;
+	line_middle->cont = false;
+	line_right->cont = false;
+	start_stop_button->cont = false;
 	
 	// pthread_join(obstacle_thread, NULL);
 	pthread_join(line_left_thread, NULL);

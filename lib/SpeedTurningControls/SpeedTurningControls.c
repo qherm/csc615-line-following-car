@@ -15,10 +15,13 @@
 
 int setSpeed = 0;// speed that is set by us
 
-double wheelSpeedRatio = 1;// Left / Right
+double wheelTurnSpeedRatio = 1;// Left / Right
+
+bool calcSpeed = true;
+bool balanceSpeed = true;
 
 int initControls(){
-  Motor_Init();
+  Motor_Init();  
   if(initLS7336RChip(wheels[LEFT].chipEnable) != 0){
     return -1;
   }
@@ -28,25 +31,80 @@ int initControls(){
   return 0;
 }
 
+/*
+function to be threaded so we know the instantaneous speed of the wheels
+*/
+void* calculateInstantSpeed(void*){//gpio must be initialized
+  uint32_t readTime;
+  int readCount;
+  calcSpeed = true;
+  while(calcSpeed){
+    for(int i = 0; i < 2; i++){
+      readCount = readLS7336RCounter(wheels[i].chipEnable);
+      readTime = gpioTick();
+      wheels[i].calcSpeed = ((wheels[i].lastCount - readCount) / ((wheels[i].lastReadTime - readTime) / 1000000));//revolutions per second
+      wheels[i].lastCount = readCount;
+      wheels[i].lastReadTime = readTime;
+      sleep(.5);
+    }
+  }
+}
+void stopCalcInstantSpeed(){
+  calcSpeed = false;
+}
 
 /*
 function to be threaded so that the wheel speeds are accurate
 */
-void balanceWheelSpeeds(){}
+void* balanceWheelSpeeds(void*){
+  balanceSpeed = true;
+  double speedRatio = 1;
+  double acceptableError = .3;//this value could change with testing
+  while(balanceSpeed){
+    if(wheelTurnSpeedRatio == 1){//wheel speed should be equal
+      speedRatio = (wheels[LEFT].calcSpeed / wheels[RIGHT].calcSpeed);
+    }
+    else if(wheelTurnSpeedRatio > 1){//left wheel should be faster, turning right
+      speedRatio = (wheels[LEFT].calcSpeed / (wheelTurnSpeedRatio * wheels[RIGHT].calcSpeed));
+    }
+    else{//right wheel should be faster, turning left
+      speedRatio = ((wheels[LEFT].calcSpeed * ( 1 / wheelTurnSpeedRatio)) / wheels[RIGHT].calcSpeed);
+    }
+
+    if(speedRatio < 1 - acceptableError){//left is going too slow
+      wheels[RIGHT].speedAdjust -= 1;
+    }
+    else if(speedRatio > 1 + acceptableError){//right is going too slow
+      wheels[LEFT].speedAdjust -= 1;
+    }
+    sleep(1);
+  }
+}
+void stopBalanceWheelSpeeds(){
+  balanceSpeed = false;
+}
+
+
+double getInstantRPS(int wheel){
+  return wheels[wheel].calcSpeed;
+}
+double getInstantCMPS(int wheel){
+  return (wheels[wheel].calcSpeed * 2 * 3.1415926 * wheelRadius);
+}
 
 
 void setSpeed(int speed){
-  if(wheelSpeedRatio == 1){
-    Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, speed);
-    Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, speed);
+  if(wheelTurnSpeedRatio == 1){
+    Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, speed + wheels[LEFT].speedAdjust);
+    Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, speed + wheels[RIGHT].speedAdjust);
   }
-  else if(wheelSpeedRatio > 1){
-    Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, speed);
-    Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, (1 / wheelSpeedRatio) * speed);
+  else if(wheelTurnSpeedRatio > 1){
+    Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, speed + wheels[LEFT].speedAdjust);
+    Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, (1 / wheelTurnSpeedRatio) * speed + wheels[RIGHT].speedAdjust);
   }
-  else if(wheelSpeedRatio < 1){
-    Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, wheelSpeedRatio * speed);
-    Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, speed);
+  else if(wheelTurnSpeedRatio < 1){
+    Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, wheelTurnSpeedRatio * speed + wheels[LEFT].speedAdjust);
+    Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, speed + wheels[RIGHT].speedAdjust);
   }
   setSpeed = speed;
 }
@@ -55,15 +113,15 @@ void setSpeed(int speed){
 void forward(){
   wheels[LEFT].direction = FORWARD;
   wheels[RIGHT].direction = FORWARD;
-  Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, setSpeed);
-  Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, setSpeed);
+  Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, setSpeed + wheels[LEFT].speedAdjust);
+  Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, setSpeed + wheels[RIGHT].speedAdjust);
 }
 
 void reverse(){
   wheels[LEFT].direction = BACKWARD;
   wheels[RIGHT].direction = BACKWARD;
-  Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, setSpeed);
-  Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, setSpeed);
+  Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, setSpeed + wheels[LEFT].speedAdjust);
+  Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, setSpeed + wheels[RIGHT].speedAdjust);
 }
 
 void stop(){
@@ -81,13 +139,15 @@ void turnAroundPivot(double pivot){
   int insideWheel, outsideWheel, scale;
   if(pivot > 0){
     insideWheel = RIGHT;
+    outsideWheel = LEFT;
     scale = ((pivot - (wheelToWheelWidth / 2)) / (pivot + (wheelToWheelWidth / 2)));
-    wheelSpeedRatio = 1 / scale;
+    wheelTurnSpeedRatio = 1 / scale;
   }
   else if(pivot < 0){
     insideWheel = LEFT;
+    outsideWheel = RIGHT;
     scale = ((pivot + (wheelToWheelWidth / 2)) / (pivot - (wheelToWheelWidth / 2)));
-    wheelSpeedRatio = scale;
+    wheelTurnSpeedRatio = scale;
   }
   else if(pivot == 0){
     centerPointTurn(RIGHT);
@@ -99,7 +159,7 @@ void turnAroundPivot(double pivot){
   else{
     wheels[insideWheel].direction = wheels[outsideWheel].direction;
   }
-  Motor_Run(wheels.[insideWheel].motorID, wheels[insideWheel].direction, setSpeed * scale);
+  Motor_Run(wheels.[insideWheel].motorID, wheels[insideWheel].direction, setSpeed * scale + wheels[insideWheel].speedAdjust);
 }
 
 void centerPointTurn(int spinDirection){
@@ -109,8 +169,8 @@ void centerPointTurn(int spinDirection){
   }
   wheels[spinDirection].direction = BACKWARD;
   wheels[forwardWheel].direction = FORWARD;
-  Motor_Run(wheels[forwardWheel].motorID, wheels[forwardWheel].direction, setSpeed);
-  Motor_Run(wheels[spinDirection].motorID, wheels[spinDirection].direction, setSpeed);
+  Motor_Run(wheels[forwardWheel].motorID, wheels[forwardWheel].direction, setSpeed + wheels[forwardWheel].speedAdjust);
+  Motor_Run(wheels[spinDirection].motorID, wheels[spinDirection].direction, setSpeed + wheels[spinDirection].speedAdjust);
 }
 
 void wheelPivotTurn(int direction){

@@ -60,22 +60,45 @@ void* balanceWheelSpeeds(void*){
   balanceSpeed = true;
   double speedRatio = 1;
   double acceptableError = .3;//this value could change with testing
+  int speed = 0;
   while(balanceSpeed){
     if(wheelTurnSpeedRatio == 1){//wheel speed should be equal
       speedRatio = (wheels[LEFT].calcSpeed / wheels[RIGHT].calcSpeed);
+      speed = setSpeed;
     }
     else if(wheelTurnSpeedRatio > 1){//left wheel should be faster, turning right
       speedRatio = (wheels[LEFT].calcSpeed / (wheelTurnSpeedRatio * wheels[RIGHT].calcSpeed));
+      speed = (( 1 / wheelTurnSpeedRatio) * setSpeed);
     }
     else{//right wheel should be faster, turning left
       speedRatio = ((wheels[LEFT].calcSpeed * ( 1 / wheelTurnSpeedRatio)) / wheels[RIGHT].calcSpeed);
+      speed = (wheelTurnSpeedRatio * setSpeed);
     }
 
+    int wheel = -1;
     if(speedRatio < 1 - acceptableError){//left is going too slow
-      wheels[RIGHT].speedAdjust -= 1;
+      if(wheels[LEFT].speedAdjust < 0){
+        wheels[LEFT].speedAdjust += 1;
+        wheel = LEFT;
+      }
+      else{
+        wheels[RIGHT].speedAdjust -= 1;
+        wheel = RIGHT;
+      }
     }
     else if(speedRatio > 1 + acceptableError){//right is going too slow
-      wheels[LEFT].speedAdjust -= 1;
+      if(wheels[RIGHT].speedAdjust < 0){
+        wheels[RIGHT].speedAdjust += 1;
+        wheel = RIGHT;
+      }
+      else{
+        wheels[LEFT].speedAdjust -= 1;
+        wheel = LEFT;
+      }
+    }
+
+    if(wheel != -1){
+      Motor_Run(wheels[wheel].motorID, wheels[wheel].direction, speed + wheels[wheel].speedAdjust)
     }
     sleep(1);
   }

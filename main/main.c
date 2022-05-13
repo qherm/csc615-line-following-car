@@ -72,8 +72,8 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 			Motor_Run(RIGHT_MOTOR, FW, 100);
 		} else if(line_left->read && line_middle->read && line_right->read){
 			// Either wait for sensors to read properly or rotate in arbitrary direction.
-			Motor_Run(LEFT_MOTOR, FW, 0);
-			Motor_Run(RIGHT_MOTOR, FW, 0);
+			// Motor_Run(LEFT_MOTOR, FW, 0);
+			// Motor_Run(RIGHT_MOTOR, FW, 0);
 		}
 	}
 	printf("Driving finished\n"); // 2. Prints properly

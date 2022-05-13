@@ -28,10 +28,12 @@ void stop_all(){
 
 void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle){
 	while(!start_stop_button->read){
-		// LineSensor.read==1:      sensor reads white
-		// LineSensor.read==0:      sensor reads black
+		// Green means white
+		// White: read ==  0
+		// Black: read == 1
     // ObstacleSensor.read==1:  sensor sees no object
     // ObjectSensor.read==0:    sensor sees an object
+
 		if(!obstacle_middle->read){
 			Motor_Stop(LEFT_MOTOR);
 			Motor_Stop(RIGHT_MOTOR);
@@ -148,12 +150,12 @@ int main()
 	pthread_create(&start_stop_button_thread, NULL, sense, &start_stop_button);
 	pthread_create(&obstacle_middle_thread, NULL, sense, &obstacle_middle);
 
-	while(1){
-		printf("LEFT: %d", line_left.read);
-		printf("MIDDLE: %d", line_middle.read);
-		printf("RIGHT: %d", line_right.read);
-	}
-	return 0;
+	// while(1){
+	// 	printf("LEFT: %d", line_left.read);
+	// 	printf("MIDDLE: %d", line_middle.read);
+	// 	printf("RIGHT: %d", line_right.read);
+	// }
+	// return 0;
 	while(!start_stop_button.read){}
 
 	if(DEV_ModuleInit())

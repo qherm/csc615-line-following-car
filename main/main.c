@@ -1,6 +1,6 @@
 #include "main.h"
 
-#define FORW 1
+#define FW 1
 #define BW 0
 
 // Counts from 3 to 1
@@ -40,38 +40,38 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 				// If obstacle still there after ~5 seconds, start obstacle avoidance
 				avoid_obstacle(line_left, line_middle, line_right, start_stop_button, obstacle_middle);
 			}
-		} else if(line_left->read && line_middle->read && line_right->read){
+		} else if(!line_left->read && !line_middle->read && !line_right->read){
 			// Maybe rotate in arbitrary direction
-			Motor_Run(LEFT_MOTOR, FORWARD, 0);
-			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
-		} else if(line_left->read && line_middle->read && !line_right->read){
-			// Turn right
-			Motor_Run(LEFT_MOTOR, FORWARD, 100);
-			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
-		} else if(line_left->read && !line_middle->read && line_right->read){
-			// Move forward
-			Motor_Run(LEFT_MOTOR, FORWARD, 100);
-			Motor_Run(RIGHT_MOTOR, FORWARD, 100);
-		} else if(line_left->read && !line_middle->read && !line_right->read){
-			// Rotate right
-			Motor_Run(LEFT_MOTOR, FORWARD, 100);
-			Motor_Run(RIGHT_MOTOR, BACKWARD, 100);
-		} else if(!line_left->read && line_middle->read && line_right->read){
-			// Turn left
-			Motor_Run(LEFT_MOTOR, FORWARD, 0);
-			Motor_Run(RIGHT_MOTOR, FORWARD, 100);
-		} else if(!line_left->read && line_middle->read && !line_right->read){
-			// Odd case. Probably stop until sensors read properly.
-			Motor_Run(LEFT_MOTOR, FORWARD, 0);
-			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
+			Motor_Run(LEFT_MOTOR, FW, 0);
+			Motor_Run(RIGHT_MOTOR, FW, 0);
 		} else if(!line_left->read && !line_middle->read && line_right->read){
+			// Turn right
+			Motor_Run(LEFT_MOTOR, FW, 100);
+			Motor_Run(RIGHT_MOTOR, FW, 0);
+		} else if(!line_left->read && line_middle->read && !line_right->read){
+			// Move forward
+			Motor_Run(LEFT_MOTOR, FW, 100);
+			Motor_Run(RIGHT_MOTOR, FW, 100);
+		} else if(!line_left->read && line_middle->read && line_right->read){
+			// Rotate right
+			Motor_Run(LEFT_MOTOR, FW, 100);
+			Motor_Run(RIGHT_MOTOR, BACKWARD, 100);
+		} else if(line_left->read && !line_middle->read && !line_right->read){
+			// Turn left
+			Motor_Run(LEFT_MOTOR, FW, 0);
+			Motor_Run(RIGHT_MOTOR, FW, 100);
+		} else if(line_left->read && !line_middle->read && line_right->read){
+			// Odd case. Probably stop until sensors read properly.
+			Motor_Run(LEFT_MOTOR, FW, 0);
+			Motor_Run(RIGHT_MOTOR, FW, 0);
+		} else if(line_left->read && line_middle->read && !line_right->read){
 			// Rotate left.
 			Motor_Run(LEFT_MOTOR, BACKWARD, 100);
-			Motor_Run(RIGHT_MOTOR, FORWARD, 100);
-		} else if(!line_left->read && !line_middle->read && !line_right->read){
+			Motor_Run(RIGHT_MOTOR, FW, 100);
+		} else if(line_left->read && line_middle->read && line_right->read){
 			// Either wait for sensors to read properly or rotate in arbitrary direction.
-			Motor_Run(LEFT_MOTOR, FORWARD, 0);
-			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
+			Motor_Run(LEFT_MOTOR, FW, 0);
+			Motor_Run(RIGHT_MOTOR, FW, 0);
 		}
 	}
 	printf("Driving finished\n"); // 2. Prints properly
@@ -81,22 +81,22 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle){
 	// Rotate left 90 degrees
 	Motor_Run(LEFT_MOTOR, BACKWARD, 100);
-	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
+	Motor_Run(RIGHT_MOTOR, FW, 100);
 	sleep(1);
 
 	// Move forward for a moment
-	Motor_Run(LEFT_MOTOR, FORWARD, 100);
-	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
+	Motor_Run(LEFT_MOTOR, FW, 100);
+	Motor_Run(RIGHT_MOTOR, FW, 100);
 	sleep(2);
 
 	// Rotate right 90 degrees
-	Motor_Run(LEFT_MOTOR, FORWARD, 100);
+	Motor_Run(LEFT_MOTOR, FW, 100);
 	Motor_Run(RIGHT_MOTOR, BACKWARD, 100);
 	sleep(1);
 
 	// Move forward until see line
-	Motor_Run(LEFT_MOTOR, FORWARD, 100);
-	Motor_Run(RIGHT_MOTOR, FORWARD, 100);
+	Motor_Run(LEFT_MOTOR, FW, 100);
+	Motor_Run(RIGHT_MOTOR, FW, 100);
 	sleep(2);
 	while(line_left->read && line_middle->read && line_right->read){}
 
@@ -105,7 +105,7 @@ void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, 
 
 int main()
 { 
-  printf("f:%d\n", FORWARD);
+  printf("f:%d\n", FW);
   printf("b:%d\n", BACKWARD);
 	if(gpioInitialise() < 0)
 	{

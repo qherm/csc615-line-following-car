@@ -51,13 +51,13 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 			Motor_Run(LEFT_MOTOR, FW, 100);
 			Motor_Run(RIGHT_MOTOR, FW, 0);
 		} else if(!line_left->read && line_middle->read && !line_right->read){
-			// Move forward
+			// Move FW
 			Motor_Run(LEFT_MOTOR, FW, 100);
 			Motor_Run(RIGHT_MOTOR, FW, 100);
 		} else if(!line_left->read && line_middle->read && line_right->read){
 			// Rotate right
 			Motor_Run(LEFT_MOTOR, FW, 100);
-			Motor_Run(RIGHT_MOTOR, BACKWARD, 100);
+			Motor_Run(RIGHT_MOTOR, BW, 100);
 		} else if(line_left->read && !line_middle->read && !line_right->read){
 			// Turn left
 			Motor_Run(LEFT_MOTOR, FW, 0);
@@ -68,7 +68,7 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 			Motor_Run(RIGHT_MOTOR, FW, 0);
 		} else if(line_left->read && line_middle->read && !line_right->read){
 			// Rotate left.
-			Motor_Run(LEFT_MOTOR, BACKWARD, 100);
+			Motor_Run(LEFT_MOTOR, BW, 100);
 			Motor_Run(RIGHT_MOTOR, FW, 100);
 		} else if(line_left->read && line_middle->read && line_right->read){
 			// Either wait for sensors to read properly or rotate in arbitrary direction.
@@ -82,21 +82,21 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 
 void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle){
 	// Rotate left 90 degrees
-	Motor_Run(LEFT_MOTOR, BACKWARD, 100);
+	Motor_Run(LEFT_MOTOR, BW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
 	sleep(1);
 
-	// Move forward for a moment
+	// Move FW for a moment
 	Motor_Run(LEFT_MOTOR, FW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
 	sleep(2);
 
 	// Rotate right 90 degrees
 	Motor_Run(LEFT_MOTOR, FW, 100);
-	Motor_Run(RIGHT_MOTOR, BACKWARD, 100);
+	Motor_Run(RIGHT_MOTOR, BW, 100);
 	sleep(1);
 
-	// Move forward until see line
+	// Move FW until see line
 	Motor_Run(LEFT_MOTOR, FW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
 	sleep(2);
@@ -108,7 +108,7 @@ void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, 
 int main()
 { 
   printf("f:%d\n", FW);
-  printf("b:%d\n", BACKWARD);
+  printf("b:%d\n", BW);
 	if(gpioInitialise() < 0)
 	{
 		fprintf(stderr, "pigpio initialise failure\n");

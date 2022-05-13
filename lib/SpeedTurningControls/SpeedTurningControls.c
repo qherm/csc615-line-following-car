@@ -60,22 +60,28 @@ void* balanceWheelSpeeds(void*){
   balanceSpeed = true;
   double speedRatio = 1;
   double acceptableError = .3;//this value could change with testing
-  int speed = 0;
+  int speed = -1;
+  int turnWheel = -1;
+  int wheel = -1;
   while(balanceSpeed){
+    speed = -1;
+    turnWheel = -1;
+    wheel = -1;
+
     if(wheelTurnSpeedRatio == 1){//wheel speed should be equal
       speedRatio = (wheels[LEFT].calcSpeed / wheels[RIGHT].calcSpeed);
-      speed = setSpeed;
     }
     else if(wheelTurnSpeedRatio > 1){//left wheel should be faster, turning right
       speedRatio = (wheels[LEFT].calcSpeed / (wheelTurnSpeedRatio * wheels[RIGHT].calcSpeed));
       speed = (( 1 / wheelTurnSpeedRatio) * setSpeed);
+      turnWheel = RIGHT;
     }
     else{//right wheel should be faster, turning left
       speedRatio = ((wheels[LEFT].calcSpeed * ( 1 / wheelTurnSpeedRatio)) / wheels[RIGHT].calcSpeed);
       speed = (wheelTurnSpeedRatio * setSpeed);
+      turnWheel = LEFT;
     }
 
-    int wheel = -1;
     if(speedRatio < 1 - acceptableError){//left is going too slow
       if(wheels[LEFT].speedAdjust < 0){
         wheels[LEFT].speedAdjust += 1;
@@ -98,7 +104,12 @@ void* balanceWheelSpeeds(void*){
     }
 
     if(wheel != -1){
-      Motor_Run(wheels[wheel].motorID, wheels[wheel].direction, speed + wheels[wheel].speedAdjust)
+      if(turnWheel == wheel){
+        Motor_Run(wheels[wheel].motorID, wheels[wheel].direction, speed + wheels[wheel].speedAdjust);
+      }
+      else{
+        Motor_Run(wheels[wheel].motorID, wheels[wheel].direction, setSpeed + wheels[wheel].speedAdjust);
+      }
     }
     sleep(1);
   }
@@ -136,6 +147,7 @@ void setSpeed(int speed){
 void forward(){
   wheels[LEFT].direction = FORWARD;
   wheels[RIGHT].direction = FORWARD;
+  wheelTurnSpeedRatio = 1;
   Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, setSpeed + wheels[LEFT].speedAdjust);
   Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, setSpeed + wheels[RIGHT].speedAdjust);
 }
@@ -143,6 +155,7 @@ void forward(){
 void reverse(){
   wheels[LEFT].direction = BACKWARD;
   wheels[RIGHT].direction = BACKWARD;
+  wheelTurnSpeedRatio = 1;
   Motor_Run(wheels[LEFT].motorID, wheels[LEFT].direction, setSpeed + wheels[LEFT].speedAdjust);
   Motor_Run(wheels[RIGHT].motorID, wheels[RIGHT].direction, setSpeed + wheels[RIGHT].speedAdjust);
 }
@@ -150,7 +163,7 @@ void reverse(){
 void stop(){
   Motor_Stop(wheels[LEFT].motorID);
   Motor_Stop(wheels[RIGHT].motorID);
-  setSpeed = 0;
+  wheelTurnSpeedRatio = 1;
 }
 
 /*

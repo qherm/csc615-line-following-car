@@ -36,14 +36,14 @@ struct Wheel {
 wheels[LEFT] = default;
 wheels[RIGHT] = default;
 
-wheels[LEFT].chipEnable = SPI0_CE1;//check for proper wheels
-wheels[LEFT].motorID = MOTORB;
+wheels[LEFT].chipEnable = SPI0_CE1;
+wheels[LEFT].motorID = MOTORA;
 
-wheels[RIGHT].chipEnable = SPI0_CE0;//check for proper wheels
-wheels[RIGHT].motorID = MOTORA;
+wheels[RIGHT].chipEnable = SPI0_CE0;
+wheels[RIGHT].motorID = MOTORB;
 
-double wheelRadius = 4;//cm //check for proper lengths
-double wheelToWheelWidth = 20;//cm
+double wheelRadius = 3.25;//cm 
+double wheelToWheelWidth = 21;//cm
 
 void initControls();
 

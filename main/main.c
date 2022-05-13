@@ -84,7 +84,7 @@ void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, 
 	// Rotate left 90 degrees
 	Motor_Run(LEFT_MOTOR, BW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
-	sleep(1);
+	sleep(0.5);
 
 	// Move FW for a moment
 	Motor_Run(LEFT_MOTOR, FW, 100);

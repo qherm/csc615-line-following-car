@@ -82,9 +82,10 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 
 void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle){
 	// Rotate left 90 degrees
+  printf("IN AVOID OBSTACLE\n");
 	Motor_Run(LEFT_MOTOR, BW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
-	sleep(0.5);
+	usleep(500000);
 
 	// Move FW for a moment
 	Motor_Run(LEFT_MOTOR, FW, 100);
@@ -94,13 +95,20 @@ void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, 
 	// Rotate right 90 degrees
 	Motor_Run(LEFT_MOTOR, FW, 100);
 	Motor_Run(RIGHT_MOTOR, BW, 100);
-	sleep(1);
+	usleep(500000);
 
+	Motor_Run(LEFT_MOTOR, FW, 100);
+	Motor_Run(RIGHT_MOTOR, FW, 100);
+	sleep(3);
+	
+  Motor_Run(LEFT_MOTOR, FW, 100);
+	Motor_Run(RIGHT_MOTOR, BW, 100);
+	usleep(500000);
+	
 	// Move FW until see line
 	Motor_Run(LEFT_MOTOR, FW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
-	sleep(2);
-	while(line_left->read && line_middle->read && line_right->read){}
+  while(line_left->read && line_middle->read && line_right->read){}
 
 	return;
 }

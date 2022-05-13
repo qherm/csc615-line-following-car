@@ -44,8 +44,8 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 			}
 		} else if(!line_left->read && !line_middle->read && !line_right->read){
 			// Maybe rotate in arbitrary direction
-			Motor_Run(LEFT_MOTOR, FW, 0);
-			Motor_Run(RIGHT_MOTOR, FW, 0);
+			Motor_Run(LEFT_MOTOR, FW, 100);
+			Motor_Run(RIGHT_MOTOR, FW, 100);
 		} else if(!line_left->read && !line_middle->read && line_right->read){
 			// Turn right
 			Motor_Run(LEFT_MOTOR, FW, 100);

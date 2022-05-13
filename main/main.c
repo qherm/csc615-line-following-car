@@ -1,5 +1,9 @@
 #include "main.h"
 
+#define FORW 1
+#define BW 0
+
+// Counts from 3 to 1
 void countdown(){
 	printf("Driving in ");
 	int i = 3;
@@ -12,6 +16,8 @@ void countdown(){
 	printf("GO!\n");
 }
 
+// Stops motors, terminates pigpio, and clears out
+// any memory allocated for the DEV module
 void stop_all(){
 	printf("Stopping\n");
 	Motor_Stop(MOTORA);
@@ -22,15 +28,17 @@ void stop_all(){
 
 void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle){
 	while(!start_stop_button->read){
-		// LineSensor.read==1: sensor reads white
-		// LineSensor.read==0: sensor reads black
-		if(obstacle_middle->read){
-			Motor_Run(LEFT_MOTOR, FORWARD, 0);
-			Motor_Run(RIGHT_MOTOR, FORWARD, 0);
+		// LineSensor.read==1:      sensor reads white
+		// LineSensor.read==0:      sensor reads black
+    // ObstacleSensor.read==1:  sensor sees no object
+    // ObjectSensor.read==0:    sensor sees an object
+		if(!obstacle_middle->read){
+			Motor_Stop(LEFT_MOTOR);
+			Motor_Stop(RIGHT_MOTOR);
 			sleep(5);
-			if(obstacle_middle->read){
+			if(!obstacle_middle->read){
 				// If obstacle still there after ~5 seconds, start obstacle avoidance
-				avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle);
+				avoid_obstacle(line_left, line_middle, line_right, start_stop_button, obstacle_middle);
 			}
 		} else if(line_left->read && line_middle->read && line_right->read){
 			// Maybe rotate in arbitrary direction
@@ -96,7 +104,9 @@ void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, 
 }
 
 int main()
-{
+{ 
+  printf("f:%d\n", FORWARD);
+  printf("b:%d\n", BACKWARD);
 	if(gpioInitialise() < 0)
 	{
 		fprintf(stderr, "pigpio initialise failure\n");
@@ -147,7 +157,7 @@ int main()
 
 	countdown();
 	
-	driving_logic(&line_left, &line_middle, &line_right, &start_stop_button);
+	driving_logic(&line_left, &line_middle, &line_right, &start_stop_button, &obstacle_middle);
 
 	line_left.cont = false;
 	line_middle.cont = false;
@@ -159,7 +169,7 @@ int main()
 	pthread_join(line_left_thread, NULL);
 	pthread_join(line_middle_thread, NULL);
 	pthread_join(line_right_thread, NULL);
-  	pthread_join(start_stop_button_thread, NULL);
+  pthread_join(start_stop_button_thread, NULL);
   	
 	stop_all();
 

@@ -16,7 +16,7 @@
 
 void countdown();
 void stop_all();
-void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button);
+void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor* obstacle_middle);
 void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle);
 
 #endif

@@ -64,8 +64,8 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 			Motor_Run(RIGHT_MOTOR, FW, 100);
 		} else if(line_left->read && !line_middle->read && line_right->read){
 			// Odd case. Probably stop until sensors read properly.
-			Motor_Run(LEFT_MOTOR, FW, 0);
-			Motor_Run(RIGHT_MOTOR, FW, 0);
+			Motor_Run(LEFT_MOTOR, FW, 100);
+			Motor_Run(RIGHT_MOTOR, BW, 100);
 		} else if(line_left->read && line_middle->read && !line_right->read){
 			// Rotate left.
 			Motor_Run(LEFT_MOTOR, BW, 100);
@@ -81,7 +81,12 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 }
 
 void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle){
-	// Rotate left 90 degrees
+	// Go backwards
+  Motor_Run(LEFT_MOTOR, BW, 100);
+  Motor_Run(RIGHT_MOTOR, BW, 100);
+  usleep(200000);
+  
+  // Rotate left 90 degrees
   printf("IN AVOID OBSTACLE\n");
 	Motor_Run(LEFT_MOTOR, BW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
@@ -108,7 +113,16 @@ void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, 
 	// Move FW until see line
 	Motor_Run(LEFT_MOTOR, FW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
-  while(line_left->read && line_middle->read && line_right->read){}
+
+  // while(line_left->read && line_middle->read && line_right->read){}
+  while((!line_left->read || !line_middle->read) && (!line_middle->read || !line_right->read)){}
+  usleep(500000);
+
+  // Rotate left 90 degrees
+  printf("IN AVOID OBSTACLE\n");
+	Motor_Run(LEFT_MOTOR, BW, 100);
+	Motor_Run(RIGHT_MOTOR, FW, 100);
+	usleep(500000);
 
 	return;
 }

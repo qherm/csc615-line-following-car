@@ -10,13 +10,13 @@
 #include <stdbool.h>
 #include <signal.h>
 #include "MotorDriver.h"
-
+#include <unistd.h>
 #define LEFT_MOTOR MOTORA
 #define RIGHT_MOTOR MOTORB
 
 void countdown();
 void stop_all();
-void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button);
+void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor* obstacle_middle);
 void avoid_obstacle(sensor *line_left, sensor *line_middle, sensor *line_right, sensor *start_stop_button, sensor *obstacle_middle);
 
 #endif

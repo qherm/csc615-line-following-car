@@ -30,8 +30,9 @@
 #define MOTORA       0
 #define MOTORB       1
 
+
 typedef enum {
-    FORWARD = 0,
+     FORWARD = 0,
     BACKWARD = 1,
 } DIR;
 

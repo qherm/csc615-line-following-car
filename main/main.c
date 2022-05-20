@@ -107,7 +107,7 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 	Motor_Run(RIGHT_MOTOR, FW, 100);
 	sleep(3);
 	
-  Motor_Run(LEFT_MOTOR, FW, 100);
+  	Motor_Run(LEFT_MOTOR, FW, 100);
 	Motor_Run(RIGHT_MOTOR, BW, 100);
 	usleep(500000);
 	
@@ -115,12 +115,12 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 	Motor_Run(LEFT_MOTOR, FW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
 
-  // while(line_left->read && line_middle->read && line_right->read){}
-  while((!line_left->read || !line_middle->read) && (!line_middle->read || !line_right->read)){}
-  usleep(500000);
+	// while(line_left->read && line_middle->read && line_right->read){}
+	while((!line_left->read || !line_middle->read) && (!line_middle->read || !line_right->read)){}
+	usleep(500000);
 
-  // Rotate left 90 degrees
-  printf("IN AVOID OBSTACLE\n");
+  	// Rotate left 90 degrees
+  	printf("IN AVOID OBSTACLE\n");
 	Motor_Run(LEFT_MOTOR, BW, 100);
 	Motor_Run(RIGHT_MOTOR, FW, 100);
 	usleep(500000);
@@ -131,8 +131,8 @@ void driving_logic(sensor *line_left, sensor *line_middle, sensor *line_right, s
 
 int main()
 { 
-  printf("f:%d\n", FW);
-  printf("b:%d\n", BW);
+  	printf("f:%d\n", FW);
+  	printf("b:%d\n", BW);
 	if(gpioInitialise() < 0)
 	{
 		fprintf(stderr, "pigpio initialise failure\n");
@@ -201,7 +201,7 @@ int main()
 	pthread_join(line_left_thread, NULL);
 	pthread_join(line_middle_thread, NULL);
 	pthread_join(line_right_thread, NULL);
-  pthread_join(start_stop_button_thread, NULL);
+  	pthread_join(start_stop_button_thread, NULL);
   	
 	stop_all();
 
